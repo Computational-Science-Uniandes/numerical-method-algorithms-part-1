@@ -1,15 +1,15 @@
 def derivada_numerica1(x_values,y_values,loc):#Verificada
-    '''Ingresados los valores de x(equisdistantes),los valores de y,y la localización de un
-        punto en x, retorna la derivada númerica en ese punto.
+    '''Ingresados los valores de x(equisdistantes),los valores de y,y la localizacion de un
+        punto en x, retorna la derivada numerica en ese punto.
 
 
     Parámetros: 
         x_values: Valores equisdistantes de x(valores crecientes)
         y_values: Valores de y
-        loc: localización en la lista del valor de x que queremos evaluar
+        loc: localizacion en la lista del valor de x que queremos evaluar
 
     Retorno:
-        Derivada evaluada númericamente en el punto deseado
+        Derivada evaluada numericamente en el punto deseado
     '''
     y_values[0]
     if loc!=0 and loc!=len(x_values)-1:
@@ -20,47 +20,47 @@ def derivada_numerica1(x_values,y_values,loc):#Verificada
         return (y_values[loc]-y_values[loc-1])/((x_values[1]-x_values[0]))  
 
 def derivada_numerica2(x_values,loc,funcion):#Verifcada
-    '''Ingresados los valores de x,y la localización de un punto en x,
-        retorna la derivada númerica en ese punto con h=10**-6
-        Defina la función como funcion(x)
+    '''Ingresados los valores de x,y la localizacion de un punto en x,
+        retorna la derivada numerica en ese punto con h=10**-6
+        Defina la funcion como funcion(x)
 
 
     Parámetros: 
         x_values: Valores de x
-        loc: localización en la lista del valor de x que queremos evaluar
-        funcion:función deseada
+        loc: localizacion en la lista del valor de x que queremos evaluar
+        funcion:funcion deseada
 
     Retorno:
-        Derivada evaluada númericamente en el punto deseado
+        Derivada evaluada numericamente en el punto deseado
     '''
     h=10e-6
     return (funcion(x_values[loc]+h)-funcion(x_values[loc]-h))/(2*h)
 
 def segunda_derivada_numerica1(x_values,y_values,loc):#verificada
-    '''Ingresados los valores de x(equisdistantes),los valores de y,y la localización de un
-        punto en x, retorna la segunda derivada númerica en ese punto
+    '''Ingresados los valores de x(equisdistantes),los valores de y,y la localizacion de un
+        punto en x, retorna la segunda derivada numerica en ese punto
 
 
-    Parámetros: 
+    Parametros: 
         x_values: Valores equisdistantes de x(valores crecientes)
         y_values: Valores de y
-        loc: localización en la lista del valor de x que queremos evaluar
+        loc: localizacion en la lista del valor de x que queremos evaluar
 
     Retorno:
-        Segunda Derivada evaluada númericamente en el punto deseado. Atención La función evalua en puntos diferentes del inicial y final.
+        Segunda Derivada evaluada númericamente en el punto deseado. Atencion La funcion evalua en puntos diferentes del inicial y final.
     '''
     return((y_values[loc+1]-2*y_values[loc]+y_values[loc-1])/((x_values[1]-x_values[0])**2))
 
-def segunda_derivada_numerica2(x_values,loc,funcion):#verificada
-    '''Ingresados los valores de x,y la localización en el
-        punto en x, retorna la segunda derivada númerica en ese punto con h=10**-6
-        Defina la función como funcion(x)
+def segunda_derivada_numerica2(x_values,loc,funcion):
+    '''Ingresados los valores de x,y la localizacion en el
+        punto en x, retorna la segunda derivada numerica en ese punto con h=10**-6
+        Defina la funcion como funcion(x)
 
 
     Parámetros: 
         x_values: Valores de x
-        loc: localización en la lista del valor de x que queremos evaluar
-        funcion: función deseada
+        loc: localizacion en la lista del valor de x que queremos evaluar
+        funcion: funcion deseada
 
     Retorno:
         Segunda Derivada evaluada númericamente en el punto deseado
@@ -70,14 +70,14 @@ def segunda_derivada_numerica2(x_values,loc,funcion):#verificada
     return((funcion(x_values[loc]+h)-2*funcion(x_values[loc])+funcion(x_values[loc]-h))/((h)**2))
 
 def lista_derivada_numerica1(x_values,y_values):#verificada
-    '''Ingresados los valores de x y los valores de y, se retorna las derivadas númericas
+    '''Ingresados los valores de x y los valores de y, se retorna las derivadas numericas
 
-    Parámetros: 
+    Parametros: 
         x_values: Valores equisdistantes de x(valores crecientes)
         y_values: Valores de y
 
     Retorno:
-        lista con las derivadas númericas
+        lista con las derivadas numericas
     '''
 
     list=[]
@@ -86,13 +86,13 @@ def lista_derivada_numerica1(x_values,y_values):#verificada
     return list
 
 def lista_derivada_numerica2(x_values,funcion):#verificada
-    '''Ingresados los valores de x y la función deseada, se retorna las derivadas númericas
+    '''Ingresados los valores de x y la funcion deseada, se retorna las derivadas numericas
 
-    Parámetros: 
+    Parametros: 
         x_values: Valores equisdistantes de x(valores crecientes)
-        función: función deseada
+        funcion: funcion deseada
     Retorno:
-        lista con las derivadas númericas
+        lista con las derivadas numericas
     '''
 
     list=[]
@@ -101,14 +101,14 @@ def lista_derivada_numerica2(x_values,funcion):#verificada
     return list
 
 def lista_segunda_derivada_numerica1(x_values,y_values):#verificada
-    '''Ingresados los valores de x y los valores de y, se retorna las segundas derivadas númericas
+    '''Ingresados los valores de x y los valores de y, se retorna las segundas derivadas numericas
 
-    Parámetros: 
+    Parametros: 
         x_values: Valores equisdistantes de x(valores crecientes)
         y_values: Valores de y
 
     Retorno:
-        lista con las segundas derivadas númericas
+        lista con las segundas derivadas numericas
     '''
     list=[]
     for i in range(1,len(x_values)-1):
@@ -116,13 +116,13 @@ def lista_segunda_derivada_numerica1(x_values,y_values):#verificada
     return list
 
 def lista_segunda_derivada_numerica2(x_values,funcion):#verificada
-    '''Ingresados los valores de x y la función deseada, se retorna las derivadas númericas
+    '''Ingresados los valores de x y la funci�n, retorna lista de las segundas derivadas numericas
 
-    Parámetros: 
+    Parametros: 
         x_values: Valores equisdistantes de x(valores crecientes)
-        función: función deseada
+        funcion: funcion deseada
     Retorno:
-        lista con las segundas derivadas númericas
+        lista con las segundas derivadas numericas
     '''
 
     list=[]
@@ -131,38 +131,43 @@ def lista_segunda_derivada_numerica2(x_values,funcion):#verificada
     return list
 
 def newton_raphson_derivada_conocida(x0,funcion,derivada): 
-    '''Ingresados los valores de x y y
-        retorna la solución númerica, Porfavor verifique con la función cambio_concavidad y
-        derivada_0, y asegure un intervalo de convergencia; de lo contrario el programa puede no funcionar.
-        Defina la función como f(x) al igual que la derivada.
+    '''Ingresados los valores de x0, la funcion y la derivada
+        retorna la solucion numerica, porfavor verifique que la funcion no cambie de
+        concavidad y la derivada sea diferente de 0 en el intervalo de convergencia, y asegure un intervalo de convergencia; 
+        de lo contrario el programa puede no funcionar.
+        Defina la funcion como f(x).
 
 
     Parámetros: 
-        x_values: Valores de x.
-        y_values: Valores de y.
+        x0: valor inicial
+        funci�n: funci�n
+        derivada: derivada
         
     '''
     xantes=x0
     xdespues=xantes-(funcion(xantes)/derivada(xantes))
-    while xdespues-xantes>10e-6:
+    while (xdespues-xantes)/xantes>10e-6:
         xantes=xdespues
         xdespues=xantes-(funcion(xantes)/derivada(xantes))
     return xdespues
 
 def newton_raphson_derivada_desconocida(x0,funcion): 
     '''Ingresados los valores de x y y
-        retorna la solución númerica(En caso que la derivada sea complicada), Porfavor verifique con la función cambio_concavidad_númerica
-        derivada_no_cero_numerica, y asegure un intervalo de convergencia; de lo contrario el programa puede no funcionar.
-        Defina la función como f(x).
+        retorna la solucion numerica(En caso que la derivada sea complicada), porfavor verifique que la funcion no cambie de
+        concavidad y la derivada sea diferente de 0 en el intervalo de convergencia, y asegure un intervalo de convergencia; de lo contrario el programa puede no funcionar.
+        Defina la funcion como f(x).
 
 
 
     Parámetros: 
-        funcion: Función conocida.
+        x0: valor inicial
+        funcion: funci�n conocida.
     '''
     xantes=x0
     xdespues=x0-(funcion(xantes)/derivada_numerica2([xantes],0,funcion))
-    while xdespues-xantes<10e-6:
+    while  (xdespues-xantes)/xantes<10e-6:
         xantes=xdespues
         xdespues=xantes-(funcion(xantes)/derivada_numerica2([xantes],0,funcion))
     return xdespues
+
+
