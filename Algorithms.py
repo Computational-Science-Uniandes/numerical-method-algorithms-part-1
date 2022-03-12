@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sun Mar  6 06:35:37 2022
-
-@author: Asus
-"""
 def derivada_numerica1(x_values,y_values,loc):#Verificada
     '''Ingresados los valores de x(equisdistantes),los valores de y,y la localización de un
         punto en x, retorna la derivada númerica en ese punto.
@@ -25,8 +19,6 @@ def derivada_numerica1(x_values,y_values,loc):#Verificada
     elif loc==len(x_values)-1:
         return (y_values[loc]-y_values[loc-1])/((x_values[1]-x_values[0]))  
 
-        
-
 def derivada_numerica2(x_values,loc,funcion):#Verifcada
     '''Ingresados los valores de x,y la localización de un punto en x,
         retorna la derivada númerica en ese punto con h=10**-6
@@ -43,8 +35,6 @@ def derivada_numerica2(x_values,loc,funcion):#Verifcada
     '''
     h=10e-6
     return (funcion(x_values[loc]+h)-funcion(x_values[loc]-h))/(2*h)
-
-    
 
 def segunda_derivada_numerica1(x_values,y_values,loc):#verificada
     '''Ingresados los valores de x(equisdistantes),los valores de y,y la localización de un
@@ -79,7 +69,6 @@ def segunda_derivada_numerica2(x_values,loc,funcion):#verificada
     funcion(x_values[loc]-h)
     return((funcion(x_values[loc]+h)-2*funcion(x_values[loc])+funcion(x_values[loc]-h))/((h)**2))
 
-
 def lista_derivada_numerica1(x_values,y_values):#verificada
     '''Ingresados los valores de x y los valores de y, se retorna las derivadas númericas
 
@@ -95,8 +84,7 @@ def lista_derivada_numerica1(x_values,y_values):#verificada
     for i in range(0,len(x_values)):
         list.append(derivada_numerica1(x_values, y_values,i))
     return list
-    
-    
+
 def lista_derivada_numerica2(x_values,funcion):#verificada
     '''Ingresados los valores de x y la función deseada, se retorna las derivadas númericas
 
@@ -127,9 +115,6 @@ def lista_segunda_derivada_numerica1(x_values,y_values):#verificada
         list.append(segunda_derivada_numerica1(x_values,y_values,i))
     return list
 
-    
-
-    
 def lista_segunda_derivada_numerica2(x_values,funcion):#verificada
     '''Ingresados los valores de x y la función deseada, se retorna las derivadas númericas
 
@@ -148,13 +133,13 @@ def lista_segunda_derivada_numerica2(x_values,funcion):#verificada
 def newton_raphson_derivada_conocida(x0,funcion,derivada): 
     '''Ingresados los valores de x y y
         retorna la solución númerica, Porfavor verifique con la función cambio_concavidad y
-        derivada_0, y asegure un intervalo de convergencia; de lo contrario el programa puede no funcionar
-        defina la función como f(x)
+        derivada_0, y asegure un intervalo de convergencia; de lo contrario el programa puede no funcionar.
+        Defina la función como f(x) al igual que la derivada.
 
 
     Parámetros: 
-        x_values: Valores de x
-        y_values: Valores de y
+        x_values: Valores de x.
+        y_values: Valores de y.
         
     '''
     xantes=x0
@@ -164,21 +149,16 @@ def newton_raphson_derivada_conocida(x0,funcion,derivada):
         xdespues=xantes-(funcion(xantes)/derivada(xantes))
     return xdespues
 
-def f(x):
-    return x**2-4
-def fprima(x):
-    return 2*x
-
-
-
 def newton_raphson_derivada_desconocida(x0,funcion): 
     '''Ingresados los valores de x y y
-        #retorna la solución númerica(En caso que la derivada sea complicada), Porfavor verifique con la función cambio_concavidad_númerica
-        #derivada_no_cero_numerica, y asegure un intervalo de convergencia; de lo contrario el programa puede no funcionar
+        retorna la solución númerica(En caso que la derivada sea complicada), Porfavor verifique con la función cambio_concavidad_númerica
+        derivada_no_cero_numerica, y asegure un intervalo de convergencia; de lo contrario el programa puede no funcionar.
+        Defina la función como f(x).
+
 
 
     Parámetros: 
-        #funcion: Función conocida
+        funcion: Función conocida.
     '''
     xantes=x0
     xdespues=x0-(funcion(xantes)/derivada_numerica2([xantes],0,funcion))
@@ -186,4 +166,3 @@ def newton_raphson_derivada_desconocida(x0,funcion):
         xantes=xdespues
         xdespues=xantes-(funcion(xantes)/derivada_numerica2([xantes],0,funcion))
     return xdespues
-
