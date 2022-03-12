@@ -145,7 +145,7 @@ def lista_segunda_derivada_numerica2(x_values,funcion):#verificada
         list.append(segunda_derivada_numerica2(x_values,i,funcion))
     return list
 
-#def newton_raphson_derivada_conocida(x0,funcion,derivada): En proceso
+def newton_raphson_derivada_conocida(x0,funcion,derivada): 
     '''Ingresados los valores de x y y
         retorna la solución númerica, Porfavor verifique con la función cambio_concavidad y
         derivada_0, y asegure un intervalo de convergencia; de lo contrario el programa puede no funcionar
@@ -157,35 +157,33 @@ def lista_segunda_derivada_numerica2(x_values,funcion):#verificada
         y_values: Valores de y
         
     '''
-    #xantes=x0
-    #xdespues=xantes-(funcion(xantes)/derivada(xantes))
-    #while xdespues-xantes>10e-6:
-        #xantes=xdespues
-       # xdespues=xantes-(funcion(xantes)/derivada(xantes))
-    #return xdespues
+    xantes=x0
+    xdespues=xantes-(funcion(xantes)/derivada(xantes))
+    while xdespues-xantes>10e-6:
+        xantes=xdespues
+        xdespues=xantes-(funcion(xantes)/derivada(xantes))
+    return xdespues
 
-#def newton_raphson_derivada_desconocida(funcion,h): En proceso
+def f(x):
+    return x**2-4
+def fprima(x):
+    return 2*x
+
+
+
+def newton_raphson_derivada_desconocida(x0,funcion): 
     '''Ingresados los valores de x y y
-        retorna la solución númerica(En caso que la derivada sea complicada), Porfavor verifique con la función cambio_concavidad_númerica
-        derivada_no_cero_numerica, y asegure un intervalo de convergencia; de lo contrario el programa puede no funcionar
+        #retorna la solución númerica(En caso que la derivada sea complicada), Porfavor verifique con la función cambio_concavidad_númerica
+        #derivada_no_cero_numerica, y asegure un intervalo de convergencia; de lo contrario el programa puede no funcionar
 
 
     Parámetros: 
-        funcion: Función conocida
-        h: 
+        #funcion: Función conocida
     '''
-    #xantes=x_values[loc]
-    #xdespues=xantes-(funcion(xantes)/derivada_central_numerica2(x_values,y_values,loc))
-    #while xdespues-xantes>10**-6:
-        #xantes=xdespues
-        #xdespues=xantes-(funcion(xantes)/derivada(xantes))
-    #return xdespues
+    xantes=x0
+    xdespues=x0-(funcion(xantes)/derivada_numerica2([xantes],0,funcion))
+    while xdespues-xantes<10e-6:
+        xantes=xdespues
+        xdespues=xantes-(funcion(xantes)/derivada_numerica2([xantes],0,funcion))
+    return xdespues
 
-
-
-
-
-
-
-        
-    
