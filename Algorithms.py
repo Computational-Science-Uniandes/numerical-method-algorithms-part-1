@@ -10,7 +10,7 @@ def derivada_numerica1(x_values,y_values,loc):#Verificada
         punto en x, retorna la derivada numerica en ese punto.
 
 
-    ParÃ¡metros: 
+    Parametros: 
         x_values: Valores equisdistantes de x(valores crecientes)
         y_values: Valores de y
         loc: localizacion en la lista del valor de x que queremos evaluar
@@ -32,7 +32,7 @@ def derivada_numerica2(x_values,loc,funcion):#Verifcada
         Defina la funcion como funcion(x)
 
 
-    ParÃ¡metros: 
+    Parametros: 
         x_values: Valores de x
         loc: localizacion en la lista del valor de x que queremos evaluar
         funcion:funcion deseada
@@ -145,7 +145,7 @@ def newton_raphson_derivada_conocida(x0,funcion,derivada):
         Defina la funcion como f(x).
 
 
-    ParÃ¡metros: 
+    Parametros: 
         x0: valor inicial
         función: función
         derivada: derivada
@@ -176,5 +176,6 @@ def newton_raphson_derivada_desconocida(x0,funcion):
         xantes=xdespues
         xdespues=xantes-(funcion(xantes)/derivada_numerica2([xantes],0,funcion))
     return xdespues
+
 
 
