@@ -5,6 +5,49 @@ Created on Sat Mar 12 14:22:13 2022
 @author: Asus
 """
 
+def productoria(list):
+    '''Ingresada una lista devuelve el producto de todos sus elementos
+        Parametros:
+            list:lista con los elementos
+        Retorno
+            Producto de todos sus elementos'''
+    despues=list[0]
+    for i in range(1,len(list)):
+        despues=despues*list[i]
+    return despues
+
+def sumatoria(list):
+    '''Ingresada una lista devuelve la suma de todos sus elementos
+        Parametros:
+            list:lista con los elementos
+        Retorno
+            Suma de todos sus elementos'''
+    despues=list[0]
+    for i in range(1,len(list)):
+        despues=despues+list[i]
+    return despues
+
+def interpolacionlagrange(x,X,Y):
+    '''Ingresada un valor de x, una lista de valores de X y de Y devuelve la interpolacion de lagrange evaluada en x
+        Parametros:
+            x:valor de x
+            X:valores de x
+            Y:valores de y
+        Retorno
+            Interpolacion de lagrange evaluada en x'''
+    
+    coeficientes=Y
+    polinomios_x=[]
+    auxiliar=[]
+    for i in range(0,len(X)):
+        for j in range(0,len(X)): 
+            if i!=j:
+                auxiliar.append((x-X[j])/(X[i]-X[j]))
+        polinomios_x.append(productoria(auxiliar)*coeficientes[i])
+        auxiliar=[]
+    return sumatoria(polinomios_x)
+
+
 def derivada_numerica1(x_values,y_values,loc):
     '''Ingresados los valores de x(equisdistantes),los valores de y,y la localizacion de un
         punto en x, retorna la derivada numerica en ese punto.
@@ -156,6 +199,63 @@ def newton_raphson_derivada_desconocida(x0,funcion):
         xantes=xdespues
         xdespues=xantes-(funcion(xantes)/derivada_numerica2([xantes],0,funcion))
     return xdespues
+
+def integral_riemann(f,a,b):
+    '''Ingresada la funcion, los limites de integracion(1000 particiones) devuelve la integral numerica(riemann) aproximada
+        Parametros:
+            f:funcion
+            a: intervalo inferior
+            b: intervalo superior
+            n: numero de intervalos
+       Retorno
+           Devuelve la integral numerica(riemann)'''
+    Δx=(b-a)/1000
+    I=0
+    for i in range(0,1000):
+        xi=a+i*Δx
+        I+=f(xi)*Δx
+    return I
+
+def integral_trapecio(f,a,b):
+    '''Ingresada la funcion, los limites de integracion(1000 particiones) devuelve la integral numerica(trapecio) aproximada
+        Parametros:
+            f:funcion
+            a: intervalo inferior
+            b: intervalo superior
+            n: numero de intervalos
+       Retorno
+           Devuelve la integral numerica(trapecio)'''
+    Δx=(b-a)/1000
+    yi=f(a)
+    yf=f(b)
+    sigmaf=0
+    xi=0
+    for i in range(1,1000):
+        xi=a+i*Δx
+        sigmaf+=f(xi)
+        
+    I=Δx*((yi/2)+sigmaf+(yf/2))
+    return I
+
+from scipy.special import roots_legendre
+
+def intregral_gauss_legendre(funcion,a,b):
+    '''Ingresada la funcion, los limites de integracion(1000 particiones) devuelve la integral numerica(gauss legendre) aproximada
+        Parametros:
+            f:funcion
+            a: intervalo inferior
+            b: intervalo superior
+            n: numero de intervalos
+       Retorno
+           Devuelve la integral numerica(gauss legendre)'''
+    
+    x,integral=0,0
+    raices,pesos=roots_legendre(1000)
+    for i in range(0,1000):
+        x=(1/2)*(raices[i]*(b-a)+a+b)
+        integral+=funcion(x)*pesos[i]
+    integral=(1/2)*(b-a)*integral        
+    return integral
 
 def matriz_vacia(n,m):
     '''Ingresados los valores deseados de columnas y filas
@@ -319,6 +419,12 @@ def eliminar_filai_columnaj(matriz,i,j):
     new=eliminarfilai(matriz,i)
     new=eliminarcolumnaj(new,j)
     return new
+
+def determinante(matriz):
+    return None
+
+print(sumatoria([1,1,1,1,1]))
+
 
 
 
