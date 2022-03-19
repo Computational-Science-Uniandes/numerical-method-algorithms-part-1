@@ -423,7 +423,6 @@ def eliminar_filai_columnaj(matriz,i,j):
 def determinante(matriz):
     return None
 
-print(sumatoria([1,1,1,1,1]))
 
 
 
