@@ -257,6 +257,40 @@ def intregral_gauss_legendre(funcion,a,b):
     integral=(1/2)*(b-a)*integral        
     return integral
 
+def integral_riemann_funciondes(X,Y,loc1,loc2):
+    '''Ingresada una serie de datos, los limites de integracion(1000 particiones) devuelve la integral numerica(riemann) aproximada(No elija como intervalo superior el ultimo datos en X)
+        Parametros:
+            X:valores de x 
+            Y: valores de y
+            loc1: intervalo inferior
+            loc2: intervalo superior
+       Retorno
+           Devuelve la integral numerica(riemann)'''
+    Δx=None
+    I=0
+    for i in range(loc1,loc2):
+        Δx=X[i+1]-X[i]
+        I+=Y[i]*Δx
+    return I
+
+def integral_trapecio_funciondes(X,Y,loc1,loc2):
+    '''Ingresada una serie de datos, los limites de integracion(1000 particiones) devuelve la integral numerica(trapecio) aproximada(No elija como intervalo superior el ultimo datos en X)
+        Parametros:
+            X:valores de x 
+            Y: valores de y
+            loc1: intervalo inferior
+            loc2: intervalo superior
+       Retorno
+           Devuelve la integral numerica(trapecio)'''
+    Δx=None
+    I=0
+    aux=0
+    for i in range(loc1,loc2):
+        Δx=X[i+1]-X[i]
+        aux=(Y[i]+Y[i+1])/2
+        I+=aux*Δx
+    return I
+
 def matriz_vacia(n,m):
     '''Ingresados los valores deseados de columnas y filas
         retorna una matriz vacía de nxm
@@ -422,6 +456,16 @@ def eliminar_filai_columnaj(matriz,i,j):
 
 def determinante(matriz):
     return None
+
+
+    
+
+
+
+
+
+    
+    
 
 
 
