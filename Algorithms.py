@@ -348,7 +348,7 @@ def suma(matriz1,matriz2):
         retorna su suma
     Parametros: 
         matriz1: Matriz 2
-        matrizr2: Matriz 1
+        matriz2: Matriz 1
     Retorno:
         Retorna su suma
     '''
@@ -363,7 +363,7 @@ def resta(matriz1,matriz2):
         retorna su resta
     Parametros: 
         matriz1: Matriz 1
-        matrizr2: Matriz 2
+        matriz2: Matriz 2
     Retorno:
         Retorna Matriz 1 - Matriz 2
     '''
@@ -378,7 +378,7 @@ def producto(matriz1,matriz2):
         retorna su producto
     Parametros: 
         matriz1: Matriz 1
-        matrizr2: Matriz 2
+        matriz2: Matriz 2
     Retorno:
         Retorna Matriz 1*Matriz 2
     '''
@@ -454,8 +454,111 @@ def eliminar_filai_columnaj(matriz,i,j):
     new=eliminarcolumnaj(new,j)
     return new
 
+def multiplicar_vector_por_escalar(vector,c):
+    '''Dada un vector y un escalar c, los multiplica
+      Parametros:
+            vector: vector
+            c: escalar
+        Retorno:
+            vector por escalar'''
+    
+    new=[]
+    for i in vector:
+        new.append(c*i)
+    return new
+   
+def restar_vectores(vector1,vector2):
+    '''Dado 2 vectores,devuelve su resta
+      Parametros:
+            vector1: vector
+            vector2: escalar
+        Retorno:
+            vector 1-vector 2'''
+    new=[]
+    for i in range(len(vector1)):
+        new.append(vector1[i]-vector2[i])
+    return new
+
+def sumar_vectores(vector1,vector2):
+    '''Dado 2 vectores,devuelve su suma
+      Parametros:
+            vector1: vector
+            vector2: escalar
+        Retorno:
+            vector 1+vector 2'''
+    new=[]
+    for i in range(len(vector1)):
+        new.append(vector1[i]+vector2[i])
+    return new
+
+def magnitud_vector(vector):
+    '''Dado un vector retorna su norma
+        Parametros:
+            vector: vector
+        Retorno
+            Norma del vector'''
+    norma=0
+    for i in vector:
+        norma+=i**2
+    return (norma)**(1/2)
+
+import numpy as np
+def angulo_vectores(vector1,vector2):
+    '''Dado 2 vectores, devuelve el angulo entre ellos
+        Parametros:
+            vector1: vector
+            vector 2: vector
+        Retorno:
+            Angulo entre ellos(grados)'''
+    costetha=(producto_punto(vector1,vector2))/(magnitud_vector(vector1)*magnitud_vector(vector2))
+    tetha=np.arccos(costetha)
+    return np.degrees(tetha)
+
+def triangular_superior(A):
+    '''Dada una matriz A(cuadrada), la transforma mediante o.e.f a una matriz triangular superior
+        Parametros:
+            A:matriz
+        Retorno:
+            Matriz en forma triangular superior'''
+    B=A
+    rows=len(A)
+    aux=None
+    for i in range(rows):
+        for j in range(i+1,rows):
+            aux=multiplicar_vector_por_escalar(B[i],( B[j][i]/B[i][i] ) )
+            B[j]=restar_vectores(aux,B[j])
+    return B
+
+def triangular_inferior(A):
+    '''Dada una matriz A(cuadrada), la transforma mediante o.e.f a una matriz triangular inferior
+        Parametros:
+            A:matriz
+        Retorno:
+            Matriz en forma triangular inferior'''
+    B=A
+    rows=len(A)
+    aux=None
+    for i in range(rows-1,-1,-1):
+        for j in range(i-1,-1,-1):
+            aux=multiplicar_vector_por_escalar(B[i],( B[j][i]/B[i][i] ) )
+            B[j]=restar_vectores(aux,B[j])
+    return B
+
+def red_gauss(A):
+    '''Dada una matriz A que representa un sistema de ecuaciones lineales,aplica el algoritmo de reduccion de gauss
+        primero la convierte en una matriz triangular superior y despues en una matriz diagonal donde las soluciones son explicitas
+        Parametros:
+            A:matriz
+        Retorno:
+            Solucion sistemas de ecuaciones lineales'''
+    B=triangular_superior(A)
+    B=triangular_inferior(B)
+    return B
+        
 def determinante(matriz):
     return None
+
+print(angulo_vectores([1,2,3],[2,4,9]))
 
 
     
