@@ -454,6 +454,18 @@ def eliminar_filai_columnaj(matriz,i,j):
     new=eliminarcolumnaj(new,j)
     return new
 
+def transpuesta(A):
+    '''Ingresada una matriz,devuelve su transpuesta
+        Parametros:
+            A: Matriz
+        Retorno
+            Matriz transpuesta'''
+    B=matriz_vacia(len(A[0]),len(A))
+    for i in range(len(A)):
+        for j in range(len(A[0])):
+            B[j][i]=A[i][j]   
+    return B
+
 def multiplicar_vector_por_escalar(vector,c):
     '''Dada un vector y un escalar c, los multiplica
       Parametros:
@@ -515,7 +527,7 @@ def angulo_vectores(vector1,vector2):
     return np.degrees(tetha)
 
 def triangular_superior(A):
-    '''Dada una matriz A(cuadrada), la transforma mediante o.e.f a una matriz triangular superior
+    '''Dada una matriz A(cuadrada), la transforma mediante o.e.f a una matriz triangular superior, no debe haber 0's en la diagonal
         Parametros:
             A:matriz
         Retorno:
@@ -526,7 +538,7 @@ def triangular_superior(A):
     for i in range(rows):
         for j in range(i+1,rows):
             aux=multiplicar_vector_por_escalar(B[i],( B[j][i]/B[i][i] ) )
-            B[j]=restar_vectores(aux,B[j])
+            B[j]=restar_vectores(B[j],aux)
     return B
 
 def triangular_inferior(A):
@@ -541,24 +553,139 @@ def triangular_inferior(A):
     for i in range(rows-1,-1,-1):
         for j in range(i-1,-1,-1):
             aux=multiplicar_vector_por_escalar(B[i],( B[j][i]/B[i][i] ) )
-            B[j]=restar_vectores(aux,B[j])
+            B[j]=restar_vectores(B[j],aux)
     return B
 
 def red_gauss(A):
     '''Dada una matriz A que representa un sistema de ecuaciones lineales,aplica el algoritmo de reduccion de gauss
         primero la convierte en una matriz triangular superior y despues en una matriz diagonal donde las soluciones son explicitas
+        (La matriz debe tener tamano nx(n+1)) y las diagonales deben ser diferentes de 0
         Parametros:
             A:matriz
         Retorno:
             Solucion sistemas de ecuaciones lineales'''
     B=triangular_superior(A)
     B=triangular_inferior(B)
-    for i in B:
+    for i in range(len(B)):
         B[i]=multiplicar_vector_por_escalar(B[i],1/(B[i][i]))
     return B
-        
+
+def indmaxarg(vector):
+    '''Dado un vector retorna el indice con mayor valor
+        Parametros:
+            vector: vector
+        Retorno
+            Indice con mayor valor'''
+    aux=max(vector)
+    for i in range(len(vector)):
+        if vector[i]==aux:
+             return i
+         
+def absvector(vector):
+    '''Dado un vector retorna sus coordenadas con valor absoluto
+        Parametros:
+            vector: vector
+        Retorno
+            coordenadas con valor absoluto'''
+    for i in range(len(vector)):
+        if vector[i]<0:
+            vector[i]=-vector[i]
+    return vector
+
+def triangular_superior_con_pivoteo(A):
+  '''Dada una matriz A(cuadrada), la transforma mediante o.e.f a una matriz triangular superior, no debe haber 0's en la diagonal
+        Parametros:
+            A:matriz
+        Retorno:
+            Matriz en forma triangular superior'''
+  B=A
+  rows=len(B)
+  aux=None
+  aux2=None
+  d=0
+  for i in range(rows):
+    aux=columnaj(B,i)[i:len(columnaj(B,i))]
+    aux=absvector(aux)
+    indi_max=indmaxarg(aux)
+    if indi_max>0:
+      C=B[i]
+      B[i]=B[i + indi_max]
+      B[i + indi_max]=C
+      d+=1
+    for j in range(i+1,rows):
+        aux2=multiplicar_vector_por_escalar(B[i],( B[j][i]/B[i][i] ) )
+        B[j]=restar_vectores(B[j],aux2)
+  return B,d
+
+def red_gauss_gen(A):
+    '''Dada una matriz A que representa un sistema de ecuaciones lineales,aplica el algoritmo de reduccion de gauss
+        primero la convierte en una matriz triangular superior y despues en una matriz diagonal donde las soluciones son explicitas
+        (La matriz debe tener tamano nx(n+1))
+        Parametros:
+            A:matriz
+        Retorno:
+            Solucion sistemas de ecuaciones lineales'''
+    B=triangular_superior_con_pivoteo(A)[0]
+    B=triangular_inferior(B)
+    for i in range(len(B)):
+        B[i]=multiplicar_vector_por_escalar(B[i],1/(B[i][i]))
+    return B
+
+def matriz_aum_id(A):
+    '''Dada una matriz cuadrada a, retorna una matriz aumentada con la identidad
+    Parametros:
+        A=matriz
+    Retorno
+        Matriz aumentada con la identidad'''
+    new=matriz_vacia(len(A),2*len(A))
+    for i in range(len(A)):
+        for j in range(len(A)):
+            new[i][j]=A[i][j]
+    for i in range(len(A)):
+        for j in range(len(A),2*len(A)):
+            if i+len(A)==j:
+                new[i][j]=1
+            else:
+                new[i][j]=0
+    return new
+    
+def inversa(A):
+  '''Dada una matriz cuadrada A, retorna su inversa
+      Parametros:
+          A: matriz
+      Retorno:
+          matriz inversa'''
+  rows=len(A)
+  B=matriz_aum_id(A)
+  B=red_gauss_gen(B)
+  for i in range(1,rows+1):
+      B=eliminarcolumnaj(B,1)
+  return B
+
 def determinante(matriz):
-    return None
+   '''Dada una matriz cuadrada A,retorna su determinante
+        Parametros:
+            A: matriz
+        Retorno
+            determinante de A'''
+   B,d=triangular_superior_con_pivoteo(matriz)
+   signo=(-1)**d
+   prod=1
+   for i in range(len(B)):
+        prod*=B[i][i]
+   return signo*prod
+
+A=[[0.71388732,0.32218192,0.75642885],[0.19284645,0.75324613,0.12512215],[0.47700877,0.58190392,0.85767071]]
+print(determinante(A))
+    
+    
+  
+ 
+
+
+
+
+
 
 
 
