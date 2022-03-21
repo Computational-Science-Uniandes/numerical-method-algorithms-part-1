@@ -165,7 +165,7 @@ def newton_raphson_derivada_conocida(x0,funcion,derivada):
     '''Ingresados los valores de x0, la funcion y la derivada
         retorna la solucion numerica, porfavor verifique que la funcion no cambie de
         concavidad y la derivada sea diferente de 0 en el intervalo de convergencia, y asegure un intervalo de convergencia; 
-        de lo contrario el programa puede no funcionar.
+        de lo contrario el programa puede no funcionar(Puede asegurar el intervalo gráficamente).
         Defina la funcion como f(x).
     Parametros: 
         x0: valor inicial
@@ -185,7 +185,7 @@ def newton_raphson_derivada_conocida(x0,funcion,derivada):
 def newton_raphson_derivada_desconocida(x0,funcion): 
     '''Ingresados los valores de x y y
         retorna la solucion numerica(En caso que la derivada sea complicada), porfavor verifique que la funcion no cambie de
-        concavidad y la derivada sea diferente de 0 en el intervalo de convergencia, y asegure un intervalo de convergencia; de lo contrario el programa puede no funcionar.
+        concavidad y la derivada sea diferente de 0 en el intervalo de convergencia, y asegure un intervalo de convergencia; de lo contrario el programa puede no funcionar(Puede asegurar el intervalo gráficamente).
         Defina la funcion como f(x).
     Parametros: 
         x0: valor inicial
@@ -311,8 +311,13 @@ def matriz_vacia(n,m):
 def print_matriz(matriz):
     '''Imprime la matriz de manera organizada
     '''
+    aux=matriz_vacia(len(matriz),len(matriz[0]))
+    for i in range(len(matriz)):
+        for j in range(len(matriz[0])):
+            aux[i][j]=round(matriz[i][j],6)
+            
     for i in range(0,len(matriz)):
-            print(matriz[i])
+            print(aux[i])
     return(' ')  
           
 def columnaj(matriz,j):
@@ -320,10 +325,11 @@ def columnaj(matriz,j):
         retorna esta columna
     Parametros: 
         matriz: matriz deseada
-        m: columna deseada
+        m: columna deseada(la primera columna es 1)
     Retorno:
         columna deseada
     '''
+    j=j-1
     columna=[]
     for i in range(0,len(matriz)):
         columna.append(matriz[i][j])
@@ -386,7 +392,7 @@ def producto(matriz1,matriz2):
     producto=matriz_vacia(len(matriz1),len(matriz2[0]))
     for i in range(0,len(matriz1)):
         for j in range(0,len(matriz2[0])):
-            producto[i][j]=producto_punto(matriz1[i],columnaj(matriz2,j))
+            producto[i][j]=producto_punto(matriz1[i],columnaj(matriz2,j+1))
     return producto
     
 def productoescalar(matriz,c):
@@ -409,7 +415,7 @@ def eliminarfilai(matriz,i):
         retorna la matriz sin la fila
     Parametros: 
         matriz1: Matriz 1
-        i: Fila deseada
+        i: Fila deseada(la primera fila es 1)
     Retorno:
         Matriz sin la fila i
     '''
@@ -425,7 +431,7 @@ def eliminarcolumnaj(matriz,j):
         retorna la matriz sin la columna
     Parametros: 
         matriz1: Matriz 1
-        j: Columna deseada
+        j: Columna deseada(la primera columna es 1)
     Retorno:
         Matriz sin la Columna j
     '''
@@ -445,8 +451,8 @@ def eliminar_filai_columnaj(matriz,i,j):
         retorna la matriz sin la fila y la columna
     Parametros: 
         matriz1: Matriz 1
-        i: Fila deseada
-        j: Columna deseada
+        i: Fila deseada (la primera fila es 1)
+        j: Columna deseada (la primera columna es 1)
     Retorno:
         Matriz sin la fila i y la columna j
     '''
@@ -575,7 +581,7 @@ def indmaxarg(vector):
         Parametros:
             vector: vector
         Retorno
-            Indice con mayor valor'''
+            Indice con mayor valor(el primer indice es 0)'''
     aux=max(vector)
     for i in range(len(vector)):
         if vector[i]==aux:
@@ -593,7 +599,7 @@ def absvector(vector):
     return vector
 
 def triangular_superior_con_pivoteo(A):
-  '''Dada una matriz A(cuadrada), la transforma mediante o.e.f a una matriz triangular superior, no debe haber 0's en la diagonal
+  '''Dada una matriz A(cuadrada), la transforma mediante o.e.f a una matriz triangular superior.
         Parametros:
             A:matriz
         Retorno:
@@ -634,7 +640,7 @@ def red_gauss_gen(A):
 def matriz_aum_id(A):
     '''Dada una matriz cuadrada a, retorna una matriz aumentada con la identidad
     Parametros:
-        A=matriz
+        A:matriz
     Retorno
         Matriz aumentada con la identidad'''
     new=matriz_vacia(len(A),2*len(A))
@@ -675,42 +681,106 @@ def determinante(matriz):
         prod*=B[i][i]
    return signo*prod
 
-A=[[0.71388732,0.32218192,0.75642885],[0.19284645,0.75324613,0.12512215],[0.47700877,0.58190392,0.85767071]]
-print(determinante(A))
+def remplazarcolumnaj(matriz,j,vector):
+    '''Dada una matriz, su columna y un vector, remplaza la columna por el vector dado
+        Parametros:
+            matriz: matriz
+            j: columna(primera columna 1)
+            vector: vector que se desea remplazar
+        Retorno:
+            matriz con el elemento remplazado'''
+    j=j-1
+    for i in range(len(matriz)):
+        matriz[i][j]=vector[i]
+    return matriz
+
+def vector_vacio(n):
+    '''Dado un numero n, devuelve con un vector de dimension n con todas las entradas iguales a 0
+        Parametros:
+            n: numero de entradas
+        Retorno:
+           Vector: con n entradas y entradas iguales a 0'''
+    aux=[]
+    for i in range(n):
+        aux.append(0)
+    return aux
+
+def calcula_qj(Q,aj,j,n):
+  '''Funcion auxiliar que calcula el vector ortonormal qj, no es de utilidad solo es una funcion auxiliar de gram_schmidt'''
+  suma=vector_vacio(n)
+  aux=None
+  for i in range(j):
+    aux=multiplicar_vector_por_escalar(columnaj(Q,i),producto_punto(aj,columnaj(Q,i)))
+    suma=sumar_vectores(suma,aux)
+  aj_p=restar_vectores(aj,suma)
+  return multiplicar_vector_por_escalar(aj_p,1/magnitud_vector(aj_p))
+
+def gram_schmidt(A):
+  '''Dada una matriz cuadrada, cuyas columnas son bases para R**n, devuelve una matriz ortogonal a traves del proceso de ortonormalizacion de gram-schmidt
+      Parametros:
+          A: matriz
+      Retorno:
+          matriz ortogonal'''
+  columns=len(A[0])
+  Q=matriz_vacia(len(A),len(A[0]))  
+  Q=remplazarcolumnaj(Q,1,multiplicar_vector_por_escalar(columnaj(A,1),1/magnitud_vector(columnaj(A,1))))#columnaj(Q,1)/magnitud_vector(columnaj(Q,1)))
+  for j in range(1,columns+1):
+    Q=remplazarcolumnaj(Q,j,calcula_qj(Q,columnaj(A,j),j,columns))
+  return Q
+
+def factorizacionQR(A):
+    Q=gram_schmidt(A)
+    R=producto(transpuesta(Q),A)
+    print('Q=')
+    print(print_matriz(Q))
+    print('R=')
+    print(print_matriz(R))
+    return print_matriz(producto(Q,R))
+
+def diagonal(A):
+    '''Dada una matriz, retorna los valores de la diagonal
+        Parametros:
+            A: matriz
+        Retorno:
+            Valores de la diagonal'''
+    columns=len(A[0])
+    aux=[]
+    for i in range(columns):
+        aux.append(A[i][i])
+    return aux
+
+def print_vector(vector):
+    aux=[]
+    for i in vector:
+        aux.append(round(i,6))
+    return aux
+        
+def valores_propios_algoritmo_QR(A):
+  '''Dada una matriz cuadrada,se itera 100 veces, el algoritmo devuelve los valores propios a traves del algoritmo qr
+      Parametros:
+          A:matriz
+          iteraciones: iteraciones del algoritmo
+      Retorno:
+          valores propios aproximados'''
+  Ak=A
+  for k in range(100):
+    Qk=gram_schmidt(Ak)
+    Ak=producto(producto(transpuesta(Qk),Ak),Qk)#Qk.T @ Ak @ Qk
+  return print_vector(diagonal(Ak))
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
     
     
   
- 
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
-    
-    
-
-
-
-
-
-
-
-
-
-
-
-        
-
-
-
-
