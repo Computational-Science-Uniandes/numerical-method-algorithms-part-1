@@ -553,12 +553,14 @@ def red_gauss(A):
             Solucion sistemas de ecuaciones lineales'''
     B=triangular_superior(A)
     B=triangular_inferior(B)
+    for i in B:
+        B[i]=multiplicar_vector_por_escalar(B[i],1/(B[i][i]))
     return B
         
 def determinante(matriz):
     return None
 
-print(angulo_vectores([1,2,3],[2,4,9]))
+
 
 
     
