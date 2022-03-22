@@ -750,37 +750,84 @@ def diagonal(A):
     return aux
 
 def print_vector(vector):
+    '''Dado un vector, lo imprime de manera organizada'''
     aux=[]
     for i in vector:
         aux.append(round(i,6))
     return aux
-        
+
 def valores_propios_algoritmo_QR(A):
   '''Dada una matriz cuadrada,se itera 100 veces, el algoritmo devuelve los valores propios a traves del algoritmo qr
       Parametros:
           A:matriz
           iteraciones: iteraciones del algoritmo
       Retorno:
-          valores propios aproximados'''
+          valores propios(reales) aproximados'''
   Ak=A
   for k in range(100):
     Qk=gram_schmidt(Ak)
     Ak=producto(producto(transpuesta(Qk),Ak),Qk)#Qk.T @ Ak @ Qk
   return print_vector(diagonal(Ak))
 
+def transpuesta_vector(vector,aux):
+    '''Dado un vector, retorna su transpuesta
+    Parametros:
+        vector:vector
+        aux: 1(si es un vector columna) 2(si es un vector fila)
+    Retorno
+        vector transpuesta'''
+    new=[]
+    if aux==1:
+        for i in vector:
+            new.append(i[0])
+    elif aux==2:
+        for i in vector:
+            new.append([i])
+    return new
+
+def vector_por_matriz(vector,matriz):
+   '''Dado un vector y una matriz devuelve su producto'''
+   vector=np.array(vector)
+   matriz=np.array(matriz)
+   return (vector @ matriz).tolist()
+        
+def matriz_por_vector(vector,matriz):
+   '''Dada una matriz y un vector devuelve su producto'''
+   vector=np.array(vector)
+   matriz=np.array(matriz) 
+   return (matriz @ vector).tolist()
+
+def metodo_de_potencias(A):
+  '''Dada una matriz cuadrada,se calcula el autovector de mayor autovalor
+      Parametros:
+          A:matriz
+      Retorno:
+          autovector con mayor autovalor'''
+  A=np.array(A)
+  new=[]
+  iteraciones=1000
+  for i in range(len(A)):
+      new.append(1)
+  v0=np.array(new)
+  Av0=A @ v0
+  v=Av0/(np.sqrt(sum(Av0 * Av0)))
+  for i in range(iteraciones):
+      v0=v
+      Av0=A @ v0
+      v=Av0/(np.sqrt(sum(Av0 * Av0)))
+  return v.tolist()
+             
+def apro_mayor_valor_propio(A,v_prop):
+  '''Dado una aproximacion al autovalor de mayor valor propio o un valor exacto, la funcion
+    retorna una aproximacion al autovalor correspondiente
+    Parametros:
+        A:matriz
+        v_prop: vector propio(fila)
+    Retorno:
+        Autovalor dominante'''
+  A=np.array(A)
+  v_prop=np.array(v_prop)
+  return (v_prop.T @ A @ v_prop) / (v_prop @ v_prop)
 
 
 
-
-
-
-
-
-
-
-
-
-    
-    
-    
-  
