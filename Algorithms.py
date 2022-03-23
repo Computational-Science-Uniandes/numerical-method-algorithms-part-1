@@ -735,7 +735,7 @@ def factorizacionQR(A):
     print(print_matriz(Q))
     print('R=')
     print(print_matriz(R))
-    return print_matriz(producto(Q,R))
+    return ''
 
 def diagonal(A):
     '''Dada una matriz, retorna los valores de la diagonal
@@ -754,7 +754,7 @@ def print_vector(vector):
     aux=[]
     for i in vector:
         aux.append(round(i,6))
-    return aux
+    return print(aux)
 
 def valores_propios_algoritmo_QR(A):
   '''Dada una matriz cuadrada,se itera 100 veces, el algoritmo devuelve los valores propios a traves del algoritmo qr
@@ -828,6 +828,7 @@ def apro_mayor_valor_propio(A,v_prop):
   A=np.array(A)
   v_prop=np.array(v_prop)
   return (v_prop.T @ A @ v_prop) / (v_prop @ v_prop)
+
 
 
 
