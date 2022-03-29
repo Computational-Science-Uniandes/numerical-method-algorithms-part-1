@@ -829,12 +829,6 @@ def apro_mayor_valor_propio(A,v_prop):
   v_prop=np.array(v_prop)
   return (v_prop.T @ A @ v_prop) / (v_prop @ v_prop)
 
-def c_vector(c,vector):
-    aux=[]
-    for i in vector:
-        aux.append(c*i)
-    return aux
-
 def regresion(x,y,grado):
     '''Ingresados valores de x,y y el grado del polinomio para la regresión,retorna los parámetros de la regresión
     Parametros
@@ -854,6 +848,7 @@ def regresion(x,y,grado):
     return (v)
 
 def aux_regresion(parametros,x):
+    '''Dada unos parametros y un valor de x, retorna el ajuste correspondiente'''
     aux=0
     for i in range(len(parametros)):
         aux+=parametros[i]*(x**i)
