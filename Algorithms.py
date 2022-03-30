@@ -395,7 +395,7 @@ def producto(matriz1,matriz2):
             producto[i][j]=producto_punto(matriz1[i],columnaj(matriz2,j+1))
     return producto
     
-def productoescalar(matriz,c):
+def productoescalarmatriz(matriz,c):
     '''Ingresados 1 Matriz y un escalar
         retorna el producto
     Parametros: 
@@ -407,7 +407,7 @@ def productoescalar(matriz,c):
     new=matriz_vacia(len(matriz),len(matriz[0]))
     for i in range(0,len(matriz)):
         for j in range(0,len(matriz[0])):
-                new[i][j]=matriz[i][j]*c
+                new[i][j]=(matriz[i][j])*c
     return new
 
 def eliminarfilai(matriz,i):
@@ -829,6 +829,14 @@ def apro_mayor_valor_propio(A,v_prop):
   v_prop=np.array(v_prop)
   return (v_prop.T @ A @ v_prop) / (v_prop @ v_prop)
 
+def aux_regresion(parametros,x):
+    '''Dada unos parametros y un valor de x, retorna el ajuste correspondiente'''
+    x=np.array(x)
+    aux=0
+    for i in range(len(parametros)):
+        aux+=parametros[i]*(x**i)
+    return aux
+
 def regresion(x,y,grado,tupla):
     '''Ingresados valores de x,y y el grado del polinomio para la regresión,retorna los parámetros de la regresión
     Parametros
@@ -837,7 +845,7 @@ def regresion(x,y,grado,tupla):
         grado: grado del polinomio a ajustar
        tupla: tupla que indica que coeficientes queremos diferentes de cero, ajuste(x**2+1)-> tupla=(1,0,1)(ascendente)
     Retorno
-        Retorna los coeficientes de mayor a menor
+        Retorna los coeficientes de mayor a menor, la incertidumbre y el coeficiente de correlacion
         '''
     columnas=0
     aux=[]
@@ -850,14 +858,25 @@ def regresion(x,y,grado,tupla):
     for i in range(len(aux)):
         A=remplazarcolumnaj(A,i+1,(np.array(x)**(aux[i])).tolist())
     v=matriz_por_vector(y,producto(inversa(producto(transpuesta(A),A)),transpuesta(A)))
-    return v
+    
+    aux1=restar_vectores(matriz_por_vector(v,A),y)
+    aux1=(magnitud_vector(aux1))**2
+    aux2=len(A)-len(A[0])-1
+    sigma_2=(aux1/aux2)
+    cov=inversa(producto(transpuesta(A),A))
+    cov=productoescalarmatriz(cov,sigma_2)
+    incer=[]
+    print(sigma_2)
+    for i in range(len(cov)):
+        incer.append((cov[i][i])**(1/2))
+    return v,incer
 
-def aux_regresion(parametros,x):
-    '''Dada unos parametros y un valor de x, retorna el ajuste correspondiente'''
-    aux=0
-    for i in range(len(parametros)):
-        aux+=parametros[i]*(x**i)
-    return aux
+
+
+
+
+
+
 
         
 
