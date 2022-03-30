@@ -837,6 +837,8 @@ def aux_regresion(parametros,x):
         aux+=parametros[i]*(x**i)
     return aux
 
+from statistics import mean
+
 def regresion(x,y,grado,tupla):
     '''Ingresados valores de x,y y el grado del polinomio para la regresión,retorna los parámetros de la regresión
     Parametros
@@ -866,10 +868,18 @@ def regresion(x,y,grado,tupla):
     cov=inversa(producto(transpuesta(A),A))
     cov=productoescalarmatriz(cov,sigma_2)
     incer=[]
-    print(sigma_2)
+    media=mean(y)
+    VT=sumatoria(((np.array(y)-media)**2).tolist())
+    R_2=(1-aux1/VT)
     for i in range(len(cov)):
         incer.append((cov[i][i])**(1/2))
-    return v,incer
+    return v,incer,R_2
+
+
+
+
+
+
 
 
 
