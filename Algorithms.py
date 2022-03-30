@@ -829,23 +829,28 @@ def apro_mayor_valor_propio(A,v_prop):
   v_prop=np.array(v_prop)
   return (v_prop.T @ A @ v_prop) / (v_prop @ v_prop)
 
-def regresion(x,y,grado):
+def regresion(x,y,grado,tupla):
     '''Ingresados valores de x,y y el grado del polinomio para la regresión,retorna los parámetros de la regresión
     Parametros
         x: valores de x
         y: valores de y
         grado: grado del polinomio a ajustar
+       tupla: tupla que indica que coeficientes queremos diferentes de cero, ajuste(x**2+1)-> tupla=(1,0,1)(ascendente)
     Retorno
         Retorna los coeficientes de mayor a menor
         '''
+    columnas=0
+    aux=[]
+    for i in range(len(tupla)):
+        if tupla[i]==1:
+            columnas+=1   
+            aux.append(i)
     rows=len(x)
-    columns=grado+1
-    A=matriz_vacia(rows,columns)
-    A=remplazarcolumnaj(A,1,[1]*rows)
-    for i in range(2,columns+1):
-        A=remplazarcolumnaj(A,i,(np.array(x)**(i-1)).tolist())
+    A=matriz_vacia(rows,columnas)
+    for i in range(len(aux)):
+        A=remplazarcolumnaj(A,i+1,(np.array(x)**(aux[i])).tolist())
     v=matriz_por_vector(y,producto(inversa(producto(transpuesta(A),A)),transpuesta(A)))
-    return (v)
+    return v
 
 def aux_regresion(parametros,x):
     '''Dada unos parametros y un valor de x, retorna el ajuste correspondiente'''
