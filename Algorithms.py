@@ -661,12 +661,16 @@ def inversa(A):
           A: matriz
       Retorno:
           matriz inversa'''
-  rows=len(A)
-  B=matriz_aum_id(A)
-  B=red_gauss_gen(B)
-  for i in range(1,rows+1):
-      B=eliminarcolumnaj(B,1)
-  return B
+  try:
+      rows=len(A)
+      B=matriz_aum_id(A)
+      B=red_gauss_gen(B)
+      for i in range(1,rows+1):
+          B=eliminarcolumnaj(B,1)
+      return B
+  except:
+      return('Matriz no cuadrada o input invalido')
+
 
 def determinante(matriz):
    '''Dada una matriz cuadrada A,retorna su determinante
@@ -860,7 +864,6 @@ def regresion(x,y,grado,tupla):
     for i in range(len(aux)):
         A=remplazarcolumnaj(A,i+1,(np.array(x)**(aux[i])).tolist())
     v=matriz_por_vector(y,producto(inversa(producto(transpuesta(A),A)),transpuesta(A)))
-    
     aux1=restar_vectores(matriz_por_vector(v,A),y)
     aux1=(magnitud_vector(aux1))**2
     aux2=len(A)-len(A[0])-1
@@ -872,26 +875,15 @@ def regresion(x,y,grado,tupla):
     VT=sumatoria(((np.array(y)-media)**2).tolist())
     R_2=(1-aux1/VT)
     for i in range(len(cov)):
-        incer.append((cov[i][i])**(1/2))
+        incer.append((abs(cov[i][i]))**(1/2))
     return v,incer,R_2
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+   
         
-
-
-
-
-
-
+        
+        
+        
+        
+        
+        
+        
+        
