@@ -906,7 +906,7 @@ def aux_regresion(x,y,grado,tupla):
         aux=yajus1[i]
         result=aux+result
     return result
-def dibujo_reg(x,y,grado,tupla,fila,columna,nombre,nombrex,nombrey,ax):
+def dibujo_reg(x,y,grado,tupla,fila,columna,nombre,nombrex,nombrey,label,ax):
     '''Ingresados valores de x,y y el grado del polinomio para la regresión,retorna los datos ploteados en 2 dimensiones
     se compara experimento con ajuste, ( se debe antes crear el plano)
     si no cola subplot fila=columna=0, importe matplotlib
@@ -923,6 +923,8 @@ def dibujo_reg(x,y,grado,tupla,fila,columna,nombre,nombrex,nombrey,ax):
        nombre: Nombre gráfica
        nombrex: Nombre en x
        nombrey: Nombre en y
+       label: Nombre de la linea
+
     Retorno
         Retorna los datos ploteados en una (figura ya hecha) en 2 dimensiones se compara experimento con ajuste'''
     plt.style.use('dark_background')
@@ -930,20 +932,41 @@ def dibujo_reg(x,y,grado,tupla,fila,columna,nombre,nombrex,nombrey,ax):
 
     if columna==0 and fila==0:
         
-        ax.scatter(x,y)
+        ax.scatter(x,y,label='datos'+label)
         x.sort()
-        ax.plot(np.array((np.linspace(x[0],x[-1]),1000))[0],aux_regresion(x,y,grado,tupla))
+        ax.plot(np.array((np.linspace(x[0],x[-1]),1000))[0],aux_regresion(x,y,grado,tupla),label='ajuste'+label)
         ax.set_xlabel(nombrex)
         ax.set_ylabel(nombrey)
         ax.set_title(nombre)
+        ax.legend()
+    elif columna==0:
+        
+        ax[fila].scatter(x,y,label='datos'+label)
+        x.sort()
+        ax[fila].plot(np.array((np.linspace(x[0],x[-1]),1000))[0],aux_regresion(x,y,grado,tupla),label='ajuste'+label)
+        ax[fila].set_xlabel(nombrex)
+        ax[fila].set_ylabel(nombrey)
+        ax[fila].set_title(nombre)
+        ax[fila].legend()
+        
+    elif fila==0:
+        ax[columna].scatter(x,y,label='datos'+label)
+        x.sort()
+        ax[columna].plot(np.array((np.linspace(x[0],x[-1]),1000))[0],aux_regresion(x,y,grado,tupla),label='ajuste'+label)
+        ax[columna].set_xlabel(nombrex)
+        ax[columna].set_ylabel(nombrey)
+        ax[columna].set_title(nombre)
+        ax[columna].legend()
+        
     else:
         
-        ax[fila][columna].scatter(x,y)
+        ax[fila][columna].scatter(x,y,label='datos'+label)
         x.sort()
-        ax[fila][columna].plot(np.array((np.linspace(x[0],x[-1]),1000))[0],aux_regresion(x,y,grado,tupla))
+        ax[fila][columna].plot(np.array((np.linspace(x[0],x[-1]),1000))[0],aux_regresion(x,y,grado,tupla),label='ajuste'+label)
         ax[fila][columna].set_xlabel(nombrex)
         ax[fila][columna].set_ylabel(nombrey)
         ax[fila][columna].set_title(nombre)
+        ax[fila][columna].legend()
 
 def regresionlineal(x,y):
     mediay=st.mean(y)
@@ -991,7 +1014,7 @@ def aux_regresionlin(x,y):
     parametros=ajuste[0][::-1]
     x.sort()
     x=np.array((np.linspace(x[0],x[-1]),1000))[0]
-    grados=(1,1)
+    grados=(0,1)
     yajus1=[]
     aux=None
     result=None
@@ -1002,7 +1025,7 @@ def aux_regresionlin(x,y):
         aux=yajus1[i]
         result=aux+result
     return result
-def dibujo_reglineal(x,y,fila,columna,nombre,nombrex,nombrey,ax,tuplfin):
+def dibujo_reglineal(x,y,fila,columna,nombre,nombrex,nombrey,ax,label):
     '''Ingresados valores de x,y y el grado del polinomio para la regresión,retorna los datos ploteados en 2 dimensiones
     se compara experimento con ajuste, ( se debe antes crear el plano)
     si no cola subplot fila=columna=0, importe matplotlib
@@ -1019,6 +1042,8 @@ def dibujo_reglineal(x,y,fila,columna,nombre,nombrex,nombrey,ax,tuplfin):
        nombre: Nombre gráfica
        nombrex: Nombre en x
        nombrey: Nombre en y
+       label: Nombre de la linea
+
     Retorno
         Retorna los datos ploteados en una (figura ya hecha) en 2 dimensiones se compara experimento con ajuste'''
     plt.style.use('dark_background')
@@ -1026,17 +1051,35 @@ def dibujo_reglineal(x,y,fila,columna,nombre,nombrex,nombrey,ax,tuplfin):
 
     if columna==0 and fila==0:
         
-        ax.scatter(x,y)
+        ax.scatter(x,y,label='datos'+label)
         x.sort()
-        ax.plot(np.array((np.linspace(x[0],x[-1]),1000))[0],aux_regresionlin(x,y))
+        ax.plot(np.array((np.linspace(x[0],x[-1]),1000))[0],aux_regresionlin(x,y),label='ajuste'+label)
         ax.set_xlabel(nombrex)
         ax.set_ylabel(nombrey)
         ax.set_title(nombre)
+        ax.legend()
+    elif columna==0:
+        ax[fila].scatter(x,y,label='datos'+label)
+        x.sort()
+        ax[fila].plot(np.array((np.linspace(x[0],x[-1]),1000))[0],aux_regresionlin(x,y),label='ajuste'+label)
+        ax[fila].set_xlabel(nombrex)
+        ax[fila].set_ylabel(nombrey)
+        ax[fila].set_title(nombre)
+        ax[fila].legend()
+    elif fila==0:
+        ax[columna].scatter(x,y,label='datos'+label)
+        x.sort()
+        ax[columna].plot(np.array((np.linspace(x[0],x[-1]),1000))[0],aux_regresionlin(x,y),label='ajuste'+label)
+        ax[columna].set_xlabel(nombrex)
+        ax[columna].set_ylabel(nombrey)
+        ax[columna].set_title(nombre)
+        ax[columna].legend()
     else:
         
-        ax[fila][columna].scatter(x,y)
+        ax[fila][columna].scatter(x,y,label='datos'+label)
         x.sort()
-        ax[fila][columna].plot(np.array((np.linspace(x[0],x[-1]),1000))[0],aux_regresionlin(x,y))
+        ax[fila][columna].plot(np.array((np.linspace(x[0],x[-1]),1000))[0],aux_regresionlin(x,y),label='ajuste'+label)
         ax[fila][columna].set_xlabel(nombrex)
         ax[fila][columna].set_ylabel(nombrey)
         ax[fila][columna].set_title(nombre)
+        ax[fila][columna].legend()
