@@ -1,9 +1,10 @@
-# -*- coding: utf-8 -*-
 """
 Created on Sat Mar 12 14:22:13 2022
 
 @author: Asus
 """
+import warnings
+warnings.filterwarnings("ignore")
 
 def productoria(list):
     '''Ingresada una lista devuelve el producto de todos sus elementos
@@ -833,16 +834,9 @@ def apro_mayor_valor_propio(A,v_prop):
   v_prop=np.array(v_prop)
   return (v_prop.T @ A @ v_prop) / (v_prop @ v_prop)
 
-def aux_regresion(parametros,x):
-    '''Dada unos parametros y un valor de x, retorna el ajuste correspondiente'''
-    x=np.array(x)
-    aux=0
-    for i in range(len(parametros)):
-        aux+=parametros[i]*(x**i)
-    return aux
-
 import statistics as st 
 
+#http://www1.monografias.com/docs115/regresion-lineal-multiple/regresion-lineal-multiple2.shtml
 def regresion(x,y,grado,tupla):
     '''Ingresados valores de x,y y el grado del polinomio para la regresión,retorna los parámetros de la regresión
     Parametros
@@ -866,24 +860,183 @@ def regresion(x,y,grado,tupla):
     v=matriz_por_vector(y,producto(inversa(producto(transpuesta(A),A)),transpuesta(A)))
     aux1=restar_vectores(matriz_por_vector(v,A),y)
     aux1=(magnitud_vector(aux1))**2
-    aux2=len(A)-len(A[0])-1
+    if len(A)-len(A[0])-1!=0:
+        aux2=len(A)-len(A[0])-1
+    elif len(A)-len(A[0])-1==0:
+        aux2=len(A)-len(A[0])
     sigma_2=(aux1/aux2)
     cov=inversa(producto(transpuesta(A),A))
     cov=productoescalarmatriz(cov,sigma_2)
     incer=[]
     media=st.mean(y)
     VT=sumatoria(((np.array(y)-media)**2).tolist())
-    R_2=(1-aux1/VT)
+    R_2=1-(sigma_2*(len(A)-1)/VT)
+    R=(R_2)**(1/2)
     for i in range(len(cov)):
         incer.append((abs(cov[i][i]))**(1/2))
-    return v,incer,R_2
-   
+    return v[::-1],incer[::-1],R
+
+import matplotlib.pyplot as plt
+
+def aux_regresion(x,y,grado,tupla):
+    '''Ingresados valores de x,y y el grado del polinomio para la regresión,retorna los datos de y ajustados a x
+    Parametros
+        x: valores de x
+        y: valores de y
+        grado: grado del polinomio a ajustar
+       tupla: tupla que indica que coeficientes queremos diferentes de cero, ajuste(x**2+1)-> tupla=(1,0,1)(ascendente)
+    Retorno
+        Retorna los datos de y ajustados a x
+        '''
+    ajuste=regresion(x,y,grado,tupla)
+    parametros=ajuste[0][::-1]
+    x.sort()
+    x=np.array((np.linspace(x[0],x[-1]),1000))[0]
+    grados=[]
+    yajus1=[]
+    aux=None
+    result=None
+    for i in range(len(tupla)):
+        if tupla[i]==1:
+            grados.append(i)
+    for i in range(len(parametros)):
+       yajus1.append((parametros[i]*(x**(grados[i]))))
+    result=yajus1[0]
+    for i in range(1,len(yajus1)):
+        aux=yajus1[i]
+        result=aux+result
+    return result
+def dibujo_reg(x,y,grado,tupla,fila,columna,nombre,nombrex,nombrey,ax):
+    '''Ingresados valores de x,y y el grado del polinomio para la regresión,retorna los datos ploteados en 2 dimensiones
+    se compara experimento con ajuste, ( se debe antes crear el plano)
+    si no cola subplot fila=columna=0, importe matplotlib
+    --------------------------
+    Colocar antes fig,ax = plt.subplots(filas(desde 0),columnas(desde 0),figsize=(eje x,ejey))
+    ---------------------------
+    Parametros
+        x: valores de x
+        y: valores de y
+        grado: grado del polinomio a ajustar
+       tupla: tupla que indica que coeficientes queremos diferentes de cero, ajuste(x**2+1)-> tupla=(1,0,1)(ascendente)
+       fila: columna en el subplot empieza desde 0
+       columna: columna en el subplot empieza desde 0
+       nombre: Nombre gráfica
+       nombrex: Nombre en x
+       nombrey: Nombre en y
+    Retorno
+        Retorna los datos ploteados en una (figura ya hecha) en 2 dimensiones se compara experimento con ajuste'''
+    plt.style.use('dark_background')
+    x.sort()
+
+    if columna==0 and fila==0:
         
+        ax.scatter(x,y)
+        x.sort()
+        ax.plot(np.array((np.linspace(x[0],x[-1]),1000))[0],aux_regresion(x,y,grado,tupla))
+        ax.set_xlabel(nombrex)
+        ax.set_ylabel(nombrey)
+        ax.set_title(nombre)
+    else:
         
+        ax[fila][columna].scatter(x,y)
+        x.sort()
+        ax[fila][columna].plot(np.array((np.linspace(x[0],x[-1]),1000))[0],aux_regresion(x,y,grado,tupla))
+        ax[fila][columna].set_xlabel(nombrex)
+        ax[fila][columna].set_ylabel(nombrey)
+        ax[fila][columna].set_title(nombre)
+
+def regresionlineal(x,y):
+    mediay=st.mean(y)
+    mediax=st.mean(x)
+    sigma1=0
+    sigma2=0
+    sigma4=0
+    sigma5=0
+    sigma6=0
+    sigma7=0
+    sigma8=0
+    for i in range(len(x)):
+        sigma1+=x[i]*(y[i]-mediay)
+        sigma2+=x[i]*(x[i]-mediax)
+    m=sigma1/sigma2
+    b=mediay-m*mediax
+    coeficientes=[m,b]
+    for i in range(len(x)):
+        sigma4+=(y[i]-b-m*x[i])**2
+    varianza=(sigma4/(len(x)-2))**(1/2)
+    error_m=varianza*((len(x)/sigma2)**(1/2))
+    for i in range(len(x)):
+        sigma5+=x[i]**2
+    error_b=varianza*((sigma5/sigma2)**(1/2))
+    errores=[error_m,error_b]
+    for i in range(len(x)):
+        sigma6+=(x[i]-mediax)*(y[i]-mediay)
+        sigma7+=(x[i]-mediax)**2
+        sigma8+=(y[i]-mediay)**2
+    r=sigma6/((sigma7*sigma6)**(1/2))
+    return coeficientes,errores,r
+#https://glosarios.servidor-alicante.com/terminos-estadistica/coeficiente-de-correlacion-lineal-de-pearson
+
+def aux_regresionlin(x,y):
+    '''Ingresados valores de x,y y el grado del polinomio para la regresión,retorna los datos de y ajustados a x
+    Parametros
+        x: valores de x
+        y: valores de y
+        grado: grado del polinomio a ajustar
+       tupla: tupla que indica que coeficientes queremos diferentes de cero, ajuste(x**2+1)-> tupla=(1,0,1)(ascendente)
+    Retorno
+        Retorna los datos de y ajustados a x
+        '''
+    ajuste=regresionlineal(x,y)
+    parametros=ajuste[0][::-1]
+    x.sort()
+    x=np.array((np.linspace(x[0],x[-1]),1000))[0]
+    grados=(1,1)
+    yajus1=[]
+    aux=None
+    result=None
+    for i in range(len(parametros)):
+       yajus1.append((parametros[i]*(x**(grados[i]))))
+    result=yajus1[0]
+    for i in range(1,len(yajus1)):
+        aux=yajus1[i]
+        result=aux+result
+    return result
+def dibujo_reglineal(x,y,fila,columna,nombre,nombrex,nombrey,ax,tuplfin):
+    '''Ingresados valores de x,y y el grado del polinomio para la regresión,retorna los datos ploteados en 2 dimensiones
+    se compara experimento con ajuste, ( se debe antes crear el plano)
+    si no cola subplot fila=columna=0, importe matplotlib
+    --------------------------
+    Colocar antes fig,ax = plt.subplots(filas(desde 0),columnas(desde 0),figsize=(eje x,ejey))
+    ---------------------------
+    Parametros
+        x: valores de x
+        y: valores de y
+        grado: grado del polinomio a ajustar
+       tupla: tupla que indica que coeficientes queremos diferentes de cero, ajuste(x**2+1)-> tupla=(1,0,1)(ascendente)
+       fila: columna en el subplot empieza desde 0
+       columna: columna en el subplot empieza desde 0
+       nombre: Nombre gráfica
+       nombrex: Nombre en x
+       nombrey: Nombre en y
+    Retorno
+        Retorna los datos ploteados en una (figura ya hecha) en 2 dimensiones se compara experimento con ajuste'''
+    plt.style.use('dark_background')
+    x.sort()
+
+    if columna==0 and fila==0:
         
+        ax.scatter(x,y)
+        x.sort()
+        ax.plot(np.array((np.linspace(x[0],x[-1]),1000))[0],aux_regresionlin(x,y))
+        ax.set_xlabel(nombrex)
+        ax.set_ylabel(nombrey)
+        ax.set_title(nombre)
+    else:
         
-        
-        
-        
-        
-        
+        ax[fila][columna].scatter(x,y)
+        x.sort()
+        ax[fila][columna].plot(np.array((np.linspace(x[0],x[-1]),1000))[0],aux_regresionlin(x,y))
+        ax[fila][columna].set_xlabel(nombrex)
+        ax[fila][columna].set_ylabel(nombrey)
+        ax[fila][columna].set_title(nombre)
