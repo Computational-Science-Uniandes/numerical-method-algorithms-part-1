@@ -893,8 +893,7 @@ def aux_regresion(x,y,grado,tupla):
         '''
     ajuste=regresion(x,y,grado,tupla)
     parametros=ajuste[0][::-1]
-    x.sort()
-    x=np.array((np.linspace(x[0],x[-1]),1000))[0]
+    x=np.array((np.linspace(min(x),max(x)),1000))[0]
     grados=[]
     yajus1=[]
     aux=None
@@ -930,32 +929,27 @@ def dibujo_reg(x,y,grado,tupla,fila,columna,nombre,nombrex,nombrey,label,ax):
 
     Retorno
         Retorna los datos ploteados en una (figura ya hecha) en 2 dimensiones se compara experimento con ajuste'''
-    plt.style.use('dark_background')
-    x.sort()
 
     if columna==0 and fila==0:
         
-        ax.scatter(x,y,label='datos'+label)
-        x.sort()
-        ax.plot(np.array((np.linspace(x[0],x[-1]),1000))[0],aux_regresion(x,y,grado,tupla),label='ajuste'+label)
+        ax.scatter(x,y,label='datos '+label)
+        ax.plot(np.array((np.linspace(min(x),max(x)),1000))[0],aux_regresion(x,y,grado,tupla),label='ajuste '+label)
         ax.set_xlabel(nombrex)
         ax.set_ylabel(nombrey)
         ax.set_title(nombre)
         ax.legend()
     elif columna==0:
         
-        ax[fila].scatter(x,y,label='datos'+label)
-        x.sort()
-        ax[fila].plot(np.array((np.linspace(x[0],x[-1]),1000))[0],aux_regresion(x,y,grado,tupla),label='ajuste'+label)
+        ax[fila].scatter(x,y,label='datos '+label)
+        ax[fila].plot(np.array((np.linspace(min(x),max(x)),1000))[0],aux_regresion(x,y,grado,tupla),label='ajuste '+label)
         ax[fila].set_xlabel(nombrex)
         ax[fila].set_ylabel(nombrey)
         ax[fila].set_title(nombre)
         ax[fila].legend()
         
     elif fila==0:
-        ax[columna].scatter(x,y,label='datos'+label)
-        x.sort()
-        ax[columna].plot(np.array((np.linspace(x[0],x[-1]),1000))[0],aux_regresion(x,y,grado,tupla),label='ajuste'+label)
+        ax[columna].scatter(x,y,label='datos '+label)
+        ax[columna].plot(np.array((np.linspace(min(x),max(x)),1000))[0],aux_regresion(x,y,grado,tupla),label='ajuste '+label)
         ax[columna].set_xlabel(nombrex)
         ax[columna].set_ylabel(nombrey)
         ax[columna].set_title(nombre)
@@ -963,9 +957,8 @@ def dibujo_reg(x,y,grado,tupla,fila,columna,nombre,nombrex,nombrey,label,ax):
         
     else:
         
-        ax[fila][columna].scatter(x,y,label='datos'+label)
-        x.sort()
-        ax[fila][columna].plot(np.array((np.linspace(x[0],x[-1]),1000))[0],aux_regresion(x,y,grado,tupla),label='ajuste'+label)
+        ax[fila][columna].scatter(x,y,label='datos '+label)
+        ax[fila][columna].plot(np.array((np.linspace(min(x),max(x)),1000))[0],aux_regresion(x,y,grado,tupla),label='ajuste '+label)
         ax[fila][columna].set_xlabel(nombrex)
         ax[fila][columna].set_ylabel(nombrey)
         ax[fila][columna].set_title(nombre)
@@ -996,11 +989,11 @@ def regresionlineal(x,y):
     error_b=varianza*((sigma5/sigma2)**(1/2))
     errores=[error_m,error_b]
     for i in range(len(x)):
-        sigma6+=abs((x[i]-mediax)*(y[i]-mediay))
+        sigma6+=(x[i]-mediax)*(y[i]-mediay)
         sigma7+=(x[i]-mediax)**2
         sigma8+=(y[i]-mediay)**2
-    r=sigma6/((sigma7*sigma6)**(1/2))
-    return coeficientes,errores,r
+    r=sigma6/(np.sqrt(sigma7*sigma8))
+    return coeficientes,errores,abs(r)
 #https://glosarios.servidor-alicante.com/terminos-estadistica/coeficiente-de-correlacion-lineal-de-pearson
 
 def aux_regresionlin(x,y):
@@ -1015,8 +1008,7 @@ def aux_regresionlin(x,y):
         '''
     ajuste=regresionlineal(x,y)
     parametros=ajuste[0][::-1]
-    x.sort()
-    x=np.array((np.linspace(x[0],x[-1]),1000))[0]
+    x=np.array((np.linspace(min(x),max(x)),1000))[0]
     grados=(0,1)
     yajus1=[]
     aux=None
@@ -1049,42 +1041,33 @@ def dibujo_reglineal(x,y,fila,columna,nombre,nombrex,nombrey,ax,label):
 
     Retorno
         Retorna los datos ploteados en una (figura ya hecha) en 2 dimensiones se compara experimento con ajuste'''
-    plt.style.use('dark_background')
-    x.sort()
 
     if columna==0 and fila==0:
-        
-        ax.scatter(x,y,label='datos'+label)
-        x.sort()
-        ax.plot(np.array((np.linspace(x[0],x[-1]),1000))[0],aux_regresionlin(x,y),label='ajuste'+label)
+        ax.scatter(x,y,label='datos '+label)
+        ax.plot(np.array((np.linspace(min(x),max(x)),1000))[0],aux_regresionlin(x,y),label='ajuste '+label)
         ax.set_xlabel(nombrex)
         ax.set_ylabel(nombrey)
         ax.set_title(nombre)
         ax.legend()
     elif columna==0:
-        ax[fila].scatter(x,y,label='datos'+label)
-        x.sort()
-        ax[fila].plot(np.array((np.linspace(x[0],x[-1]),1000))[0],aux_regresionlin(x,y),label='ajuste'+label)
+        ax[fila].scatter(x,y,label='datos '+label)
+        ax[fila].plot(np.array((np.linspace(min(x),max(x)),1000))[0],aux_regresionlin(x,y),label='ajuste '+label)
         ax[fila].set_xlabel(nombrex)
         ax[fila].set_ylabel(nombrey)
         ax[fila].set_title(nombre)
         ax[fila].legend()
     elif fila==0:
-        ax[columna].scatter(x,y,label='datos'+label)
-        x.sort()
-        ax[columna].plot(np.array((np.linspace(x[0],x[-1]),1000))[0],aux_regresionlin(x,y),label='ajuste'+label)
+        ax[columna].scatter(x,y,label='datos '+label)
+        ax[columna].plot(np.array((np.linspace(min(x),max(x)),1000))[0],aux_regresionlin(x,y),label='ajuste '+label)
         ax[columna].set_xlabel(nombrex)
         ax[columna].set_ylabel(nombrey)
         ax[columna].set_title(nombre)
         ax[columna].legend()
     else:
         
-        ax[fila][columna].scatter(x,y,label='datos'+label)
-        x.sort()
-        ax[fila][columna].plot(np.array((np.linspace(x[0],x[-1]),1000))[0],aux_regresionlin(x,y),label='ajuste'+label)
+        ax[fila][columna].scatter(x,y,label='datos '+label)
+        ax[fila][columna].plot(np.array((np.linspace(min(x),max(x)),1000))[0],aux_regresionlin(x,y),label='ajuste '+label)
         ax[fila][columna].set_xlabel(nombrex)
         ax[fila][columna].set_ylabel(nombrey)
         ax[fila][columna].set_title(nombre)
         ax[fila][columna].legend()
-        
-        
