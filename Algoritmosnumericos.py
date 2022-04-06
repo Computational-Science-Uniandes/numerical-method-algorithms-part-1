@@ -679,12 +679,15 @@ def determinante(matriz):
             A: matriz
         Retorno
             determinante de A'''
-   B,d=triangular_superior_con_pivoteo(matriz)
-   signo=(-1)**d
-   prod=1
-   for i in range(len(B)):
-        prod*=B[i][i]
-   return signo*prod
+   try:
+       B,d=triangular_superior_con_pivoteo(matriz)
+       signo=(-1)**d
+       prod=1
+       for i in range(len(B)):
+           prod*=B[i][i]
+       return signo*prod
+   except:
+       return 0
 
 def remplazarcolumnaj(matriz,j,vector):
     '''Dada una matriz, su columna y un vector, remplaza la columna por el vector dado
@@ -993,7 +996,7 @@ def regresionlineal(x,y):
     error_b=varianza*((sigma5/sigma2)**(1/2))
     errores=[error_m,error_b]
     for i in range(len(x)):
-        sigma6+=(x[i]-mediax)*(y[i]-mediay)
+        sigma6+=abs((x[i]-mediax)*(y[i]-mediay))
         sigma7+=(x[i]-mediax)**2
         sigma8+=(y[i]-mediay)**2
     r=sigma6/((sigma7*sigma6)**(1/2))
@@ -1083,3 +1086,5 @@ def dibujo_reglineal(x,y,fila,columna,nombre,nombrex,nombrey,ax,label):
         ax[fila][columna].set_ylabel(nombrey)
         ax[fila][columna].set_title(nombre)
         ax[fila][columna].legend()
+        
+        
